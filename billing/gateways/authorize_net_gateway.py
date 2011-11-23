@@ -76,6 +76,7 @@ class AuthorizeNetGateway(Gateway):
     display_name = "Authorize.Net"
 
     def __init__(self):
+        self.test_mode = getattr(settings.GATEWAY_SETTINGS, 'MERCHANT_TEST_MODE', True)
         self.login = settings.GATEWAY_SETTINGS.AUTHORIZE_LOGIN_ID
         self.password = settings.GATEWAY_SETTINGS.AUTHORIZE_TRANSACTION_KEY
     
@@ -132,7 +133,7 @@ class AuthorizeNetGateway(Gateway):
 
     @property
     def service_url(self):
-        if self.test_mode():
+        if self.test_mode:
             return self.test_url
         return self.live_url
 
@@ -140,7 +141,7 @@ class AuthorizeNetGateway(Gateway):
         if not action == 'VOID':
             parameters['amount'] = money
         
-        parameters['test_request'] =  self.test_mode()
+        parameters['test_request'] =  self.test_mode
         url = self.service_url
         data = self.post_data(action, parameters)
         response = self.request(url, data)
@@ -324,7 +325,7 @@ class AuthorizeNetGateway(Gateway):
         
         xml = render_to_string('billing/arb/arb_create_subscription.xml', template_vars)
         
-        if self.test_mode():
+        if self.test_mode:
             url = self.arb_test_url
         else:
             url = self.arb_live_url

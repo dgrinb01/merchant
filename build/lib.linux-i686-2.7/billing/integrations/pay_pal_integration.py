@@ -7,9 +7,8 @@ from billing.signals import transaction_was_successful, transaction_was_unsucces
 
 class PayPalIntegration(Integration):
     def __init__(self):
-        self.test_mode = getattr(settings.GATEWAY_SETTINGS, "MERCHANT_TEST_MODE", True)
         # Required Fields. Just a template for the user
-        self.fields = {"business": settings.GATEWAY_SETTINGS.PAYPAL_RECEIVER_EMAIL,
+        self.fields = {"business": "",
                        "item_name": "",
                        "invoice": "",
                        "notify_url": "",
@@ -20,7 +19,7 @@ class PayPalIntegration(Integration):
 
     @property
     def service_url(self):
-        if self.test_mode:
+        if self.getattr(settings.GATEWAY_SETTINGS, "MERCHANT_TEST_MODE", True):
             return SANDBOX_POSTBACK_ENDPOINT
         return POSTBACK_ENDPOINT
 

@@ -16,12 +16,13 @@ class InvalidData(Exception):
     pass
 
 class Gateway(object):
+
+    def __init__(self):
+        # To indicate if the gateway is in test mode or not
+        self.test_mode = getattr(settings.GATEWAY_SETTINGS, 'MERCHANT_TEST_MODE', True)
+
     """Sub-classes to inherit from this and implement the below methods"""
 
-    # To indicate if the gateway is in test mode or not
-    # This should be tested in real time, to make sure it's current 
-    def test_mode(self) :
-        return getattr(settings.GATEWAY_SETTINGS, "MERCHANT_TEST_MODE", True)
 
     # The below are optional attributes to be implemented and used by subclases.
     #
