@@ -1,4 +1,14 @@
 ----------------
+Changes in this Fork
+----------------
+In original version, settings from django.conf are used for all gatewate and integration properties. 
+This fork modifies it and instead looks up the same properties from settings.GATEWAY_SETTINGS object. 
+
+This changes things from being strictly static/global to more flexible. For example, this object could be populated from database (Model). 
+
+Obviously, need to be smart about where this data is stored. Keep in mind that this data is sensative and needs to be secured.
+
+----------------
 Django-Merchant
 ----------------
 
