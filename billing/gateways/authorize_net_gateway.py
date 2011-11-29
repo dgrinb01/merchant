@@ -1,4 +1,3 @@
-
 import urllib
 import urllib2
 import datetime
@@ -23,7 +22,7 @@ RESPONSE_CODE, RESPONSE_REASON_CODE, RESPONSE_REASON_TEXT = 0, 2, 3
 def save_authorize_response(response):
     data = {}
     data['response_code']                 = int(response[0])
-    data['response_reason_code']          = response[2]
+    data['response_reason_code']          = int(response[2])
     data['response_reason_text']          = response[3]
     data['authorization_code']            = response[4]
     data['address_verification_response'] = response[5]
@@ -76,10 +75,20 @@ class AuthorizeNetGateway(Gateway):
     display_name = "Authorize.Net"
 
     def __init__(self):
-        self.test_mode = getattr(settings.GATEWAY_SETTINGS, 'MERCHANT_TEST_MODE', True)
-        self.login = settings.GATEWAY_SETTINGS.AUTHORIZE_LOGIN_ID
-        self.password = settings.GATEWAY_SETTINGS.AUTHORIZE_TRANSACTION_KEY
+        pass
     
+    @property
+    def test_mode(self):
+        return getattr(settings.GATEWAY_SETTINGS, 'AUTHORIZE_TEST_MODE', True)
+
+    @property
+    def login(self):
+        return settings.GATEWAY_SETTINGS.AUTHORIZE_LOGIN_ID
+
+    @property
+    def password(self):
+        return settings.GATEWAY_SETTINGS.AUTHORIZE_TRANSACTION_KEY
+
     def add_invoice(self, post, options):
         """add invoice details to the request parameters"""
         post['invoice_num'] = options.get('order_id', None)

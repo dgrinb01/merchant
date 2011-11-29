@@ -20,7 +20,6 @@ class Integration(object):
         # The form fields that will be rendered in the template
         self.fields = {}
         self.fields.update(options)
-        self.test_mode = getattr(settings.GATEWAY_SETTINGS, "MERCHANT_TEST_MODE", True)
    
     def add_field(self, key, value):
         self.fields[key] = value

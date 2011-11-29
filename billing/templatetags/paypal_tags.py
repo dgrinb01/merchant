@@ -16,6 +16,7 @@ class PayPalNode(template.Node):
         form_str = render_to_string("billing/paypal.html", 
                                     {"form": PayPalPaymentsForm(initial=int_obj.fields),
                                      "integration": int_obj}, context)
+
         return form_str
 
 @register.tag

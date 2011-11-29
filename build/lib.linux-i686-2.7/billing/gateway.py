@@ -18,8 +18,12 @@ class InvalidData(Exception):
 class Gateway(object):
 
     def __init__(self):
-        # To indicate if the gateway is in test mode or not
-        self.test_mode = getattr(settings.GATEWAY_SETTINGS, 'MERCHANT_TEST_MODE', True)
+        pass
+
+    @property
+    def test_mode(self):
+        raise NotImplementedError
+
 
     """Sub-classes to inherit from this and implement the below methods"""
 
@@ -57,7 +61,7 @@ class Gateway(object):
                                    "supported by the gateway.")
         # Gateways might provide some random number which
         # might not pass Luhn's test.
-        if self.test_mode():
+        if self.test_mode:
             return True 
         return credit_card.is_valid()
 

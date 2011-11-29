@@ -8,18 +8,19 @@ from billing.signals import transaction_was_successful, transaction_was_unsucces
 class PayPalIntegration(Integration):
     def __init__(self):
         # Required Fields. Just a template for the user
-        self.fields = {"business": "",
-                       "item_name": "",
+        self.fields = {"item_name": "",
                        "invoice": "",
-                       "notify_url": "",
-                       "return_url": "",
-                       "cancel_return": "",
                        "amount": 0,
                        }
 
     @property
+    def test_mode(self):
+        return getattr(settings.GATEWAY_SETTINGS, "PAYPAL_TEST_MODE", True)
+
+
+    @property
     def service_url(self):
-        if self.getattr(settings.GATEWAY_SETTINGS, "MERCHANT_TEST_MODE", True):
+        if self.getattr(settings.GATEWAY_SETTINGS, "PAYPAL_TEST_MODE", True):
             return SANDBOX_POSTBACK_ENDPOINT
         return POSTBACK_ENDPOINT
 
